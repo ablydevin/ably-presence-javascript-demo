@@ -1,147 +1,71 @@
 <html>
     <head>
         <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
-       
-        <script>
-            function refreshMembers(channel) {
-                if (channel) {
-                    channel.presence.get((err, m) => {
-
-                        memberListElement.innerHTML = '';
-
-                        let memberListContent = '';
-                        m.forEach(e => {
-                            memberListContent = memberListContent + `<li>${e.clientId} (${e.data.status})</li>` 
-                        });
-                        memberListElement.insertAdjacentHTML('beforeend', memberListContent)
-                    })
-                }
-            }
-        </script>
         <script>   
-            function initClient(displayName) {
+
                 
-                if (!displayName) return;
-
-                user.displayName = displayName;
-
-                let options = {
+            const ably = new Ably.Realtime.Promise({
                     authUrl: '/auth',
-                    clientId: displayName,
-                    log: { level: 4 } 
-                };
+            });
 
-                const ably = new Ably.Realtime(options);
-                
+            const initializeClient = async () => {
+
+                await ably.connection.once('connected');
+              
                 console.log('Connected to Ably!');
 
                 channel = ably.channels.get('cat-jam');
 
                 channel.presence.subscribe("enter", (member) => {
-                    //play a sound
-                    refreshMembers(channel)
+                    memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>` 
+                    //play a sound                    
                 });
 
                 //A member who was present has left the channel
                 channel.presence.subscribe("leave", (member) => {
                     //play a sound
-                    refreshMembers(channel)
+                    memberListElement.querySelector(`[data-clientId="${member.clientId}"]`)?.remove()
                 });
 
                 //An already present member has updated their member data
                 channel.presence.subscribe("update", (member) => {
+                    let memberItemElement = memberListElement.querySelector(`[data-clientId="${member.clientId}"]`)
+                    memberItemElement.innerHTML = `${member.clientId} (${member.data})`;
                     //play a sound
-                    console.log(member)
-                    refreshMembers(channel)
                     //let beat = new Audio('beat.mp3');
                     //beat.play();
                 });
 
                 channel.presence.subscribe("present", (member) => {
                     //play a sound
-                    refreshMembers(channel)
+                    console.log('present')
+                    memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>` 
                 });
-            }
-        </script>
-        <script>
-            function enterChannel() {
-                const displayName = displayNameInput.value;
 
-                if (!ably) {
-                    initClient(displayName)
-                }
-
-                if (channel) {
-                    user.status = 'available'
-
-                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
-                    // and that we can use later show how additional state data can be sent 
-                    channel.presence.enter(user);
-                    presenceEntryElement.style.display = 'none'
-                    presenceEnteredElement.style.display = ''
-                }
-            }
-        </script>
-         <script>
-            function leaveChannel() {
-
-                if (channel) {
-
-                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
-                    // and that we can use later show how additional state data can be sent 
-                    channel.presence.leave();
-                    presenceEntryElement.style.display = ''
-                    presenceEnteredElement.style.display = 'none'
-                    displayNameInput.value = '';
-                }
-            }
-        </script>
-        <script>
-            function updateStatus(status) {
-                if (channel) {
-                    user.status = status
-
-                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
-                    // and that we can use later show how additional state data can be sent 
-                    channel.presence.update(user);
-                }
+                channel.presence.enter('available');
             }
         </script>
     </head>
     <body>
             <aside>
                 <p>Who is here?</p>
-                <ul id="memberList">
-                </ul>
+                <ul id="memberList"></ul>
             </aside>
             <div>
-                <div id="presenceEntry">
-                    <p>Whats your name?</p>
-                    <input id="displayNameInput" type="text" />
-                    <button type="button" onclick="enterChannel()">Enter</button>
+                <div>
+                    <button type="button" onclick="channel?.presence.update('available')">Available</button>
+                    <button type="button" onclick="channel?.presence.update('away')">Away</button>
+                    <button type="button" onclick="channel?.presence.update('holiday')">Holiday</button>
+                    <button type="button" onclick="channel?.presence.update('napping')">Napping</button>
+                    <button type="button" onclick="channel?.presence.update('cats')">Cats</button>
                 </div>
-                <div id="presenceEntered" style="display:none">
-                    <div>
-                        <button type="button" onclick="updateStatus('available')">Available</button>
-                        <button type="button" onclick="updateStatus('away')">Away</button>
-                        <button type="button" onclick="updateStatus('holiday')">Holiday</button>
-                        <button type="button" onclick="updateStatus('napping')">Napping</button>
-                        <button type="button" onclick="updateStatus('cats')">Cats</button>
-                    </div>
-                    <div>
-                        <button type="button" onclick="leaveChannel()">Leave</button>
-                    </div>
+                <div>
+                    <button type="button" onclick="channel?.presence.leave()">Leave</button>
                 </div>
             </div>
     </body>
     <script>
         const memberListElement = document.querySelector('#memberList');
-        const displayNameInput = document.querySelector('#displayNameInput')
-        const presenceEntryElement = document.querySelector('#presenceEntry')
-        const presenceEnteredElement = document.querySelector('#presenceEntered')
-
-        const ably = null;
-        let channel = null;
-        let user = {}
+        initializeClient();
     </script>
 </html>
