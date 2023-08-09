@@ -26,13 +26,13 @@
                 user.displayName = displayName;
 
                 let options = {
-                    authUrl: 'http://localhost:3001/auth',
+                    authUrl: '/auth',
                     clientId: displayName,
-                    log: { level: 4 }
+                    log: { level: 4 } 
                 };
 
                 const ably = new Ably.Realtime(options);
-                //await ably.connection.once('connected');
+                
                 console.log('Connected to Ably!');
 
                 channel = ably.channels.get('cat-jam');
