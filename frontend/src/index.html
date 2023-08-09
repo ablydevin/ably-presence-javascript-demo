@@ -2,13 +2,16 @@
     <head>
         <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
         <script>   
+
+                
             const ably = new Ably.Realtime.Promise({
-                    authUrl: 'http://localhost:3001/auth',
+                    authUrl: '/auth',
             });
 
             const initializeClient = async () => {
 
                 await ably.connection.once('connected');
+              
                 console.log('Connected to Ably!');
 
                 channel = ably.channels.get('cat-jam');

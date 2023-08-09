@@ -35,9 +35,11 @@ app.get("/auth", (req, res) => {
     });
     res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
     res.setHeader('Content-Type', 'application/json');
+
     res.send(JSON.stringify(ablyToken));
   });
 
 app.listen(PORT, () => {
-    console.log(`Server started on http://localhost:${PORT}`);
+    console.log(`Server started on port ${PORT}`);
+    console.log(`Open http://${process.env.DOMAIN || `localhost:${PORT}`}/index.html in your browser to access page`)
 });
