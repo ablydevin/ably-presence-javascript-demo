@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:backend": "node ./backend/server.js",
-    "start:frontend": "open ./frontend/index.html",
+    "start:frontend": "open http://localhost:3001/index.html",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
   },
   "keywords": [],

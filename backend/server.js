@@ -42,4 +42,5 @@ app.get("/auth", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
+    console.log(`Open http://${process.env.DOMAIN || `localhost:${PORT}`}/index.html in your browser to access page`)
 });
