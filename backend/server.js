@@ -1,10 +1,9 @@
 require('dotenv').config({path: __dirname + '/.env'});
+const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
-
-
 
 const app = express();
 app.use(cors());
@@ -27,7 +26,7 @@ app.get("/auth", (req, res) => {
   }
   var claims = {
     'x-ably-capability': JSON.stringify({ '*': ['publish', 'subscribe', 'presence'] }),
-    'x-ably-clientId': clientId
+    'x-ably-clientId': uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] })
   }
   const ablyToken = jwt.sign(claims, process.env.ABLY_KEY_SECRET, {
     algorithm: 'HS256',
