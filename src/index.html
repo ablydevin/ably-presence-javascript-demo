@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+       
+        <script>
+            function refreshMembers(channel) {
+                if (channel) {
+                    channel.presence.get((err, m) => {
+
+                        memberListElement.innerHTML = '';
+
+                        let memberListContent = '';
+                        m.forEach(e => {
+                            memberListContent = memberListContent + `<li>${e.clientId} (${e.data.status})</li>` 
+                        });
+                        memberListElement.insertAdjacentHTML('beforeend', memberListContent)
+                    })
+                }
+            }
+        </script>
+        <script>   
+            function initClient(displayName) {
+                
+                if (!displayName) return;
+
+                user.displayName = displayName;
+
+                let options = {
+                    key: 'fqOR-g.V8I2qw:Xfy4MTKbVqFDE4oKjDuV2SyCxAKrQcdJC3GrO1cmwFg',
+                    clientId: displayName,
+                };
+                const ably = new Ably.Realtime(options);
+                //await ably.connection.once('connected');
+                console.log('Connected to Ably!');
+
+                channel = ably.channels.get('cat-jam');
+
+                channel.presence.subscribe("enter", (member) => {
+                    //play a sound
+                    refreshMembers(channel)
+                });
+
+                //A member who was present has left the channel
+                channel.presence.subscribe("leave", (member) => {
+                    //play a sound
+                    refreshMembers(channel)
+                });
+
+                //An already present member has updated their member data
+                channel.presence.subscribe("update", (member) => {
+                    //play a sound
+                    console.log(member)
+                    refreshMembers(channel)
+                    //let beat = new Audio('beat.mp3');
+                    //beat.play();
+                });
+
+                channel.presence.subscribe("present", (member) => {
+                    //play a sound
+                    refreshMembers(channel)
+                });
+            }
+        </script>
+        <script>
+            function enterChannel() {
+                const displayName = displayNameInput.value;
+
+                if (!ably) {
+                    initClient(displayName)
+                }
+
+                if (channel) {
+                    user.status = 'available'
+
+                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
+                    // and that we can use later show how additional state data can be sent 
+                    channel.presence.enter(user);
+                    presenceEntryElement.style.display = 'none'
+                    presenceEnteredElement.style.display = ''
+                }
+            }
+        </script>
+         <script>
+            function leaveChannel() {
+
+                if (channel) {
+
+                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
+                    // and that we can use later show how additional state data can be sent 
+                    channel.presence.leave();
+                    presenceEntryElement.style.display = ''
+                    presenceEnteredElement.style.display = 'none'
+                    displayNameInput.value = '';
+                }
+            }
+        </script>
+        <script>
+            function updateStatus(status) {
+                if (channel) {
+                    user.status = status
+
+                    //Send an object so that we reinforce the idea that the parameter is an arbitrary object
+                    // and that we can use later show how additional state data can be sent 
+                    channel.presence.update(user);
+                }
+            }
+        </script>
+    </head>
+    <body>
+            <aside>
+                <p>Who is here?</p>
+                <ul id="memberList">
+                </ul>
+            </aside>
+            <div>
+                <div id="presenceEntry">
+                    <p>Whats your name?</p>
+                    <input id="displayNameInput" type="text" />
+                    <button type="button" onclick="enterChannel()">Enter</button>
+                </div>
+                <div id="presenceEntered" style="display:none">
+                    <div>
+                        <button type="button" onclick="updateStatus('available')">Available</button>
+                        <button type="button" onclick="updateStatus('away')">Away</button>
+                        <button type="button" onclick="updateStatus('holiday')">Holiday</button>
+                        <button type="button" onclick="updateStatus('napping')">Napping</button>
+                        <button type="button" onclick="updateStatus('cats')">Cats</button>
+                    </div>
+                    <div>
+                        <button type="button" onclick="leaveChannel()">Leave</button>
+                    </div>
+                </div>
+            </div>
+    </body>
+    <script>
+        const memberListElement = document.querySelector('#memberList');
+        const displayNameInput = document.querySelector('#displayNameInput')
+        const presenceEntryElement = document.querySelector('#presenceEntry')
+        const presenceEnteredElement = document.querySelector('#presenceEntered')
+
+        const ably = null;
+        let channel = null;
+        let user = {}
+    </script>
+</html>
