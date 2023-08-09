@@ -1,0 +1,20 @@
+{
+  "name": "presencevanillajsdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "node ./backend/server.js",
+    "start:frontend": "open http://localhost:3001/index.html",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "open": "^9.1.0"
+  }
+}

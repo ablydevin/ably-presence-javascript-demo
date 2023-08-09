@@ -26,9 +26,11 @@
                 user.displayName = displayName;
 
                 let options = {
-                    key: 'fqOR-g.V8I2qw:Xfy4MTKbVqFDE4oKjDuV2SyCxAKrQcdJC3GrO1cmwFg',
+                    authUrl: 'http://localhost:3001/auth',
                     clientId: displayName,
+                    log: { level: 4 }
                 };
+
                 const ably = new Ably.Realtime(options);
                 //await ably.connection.once('connected');
                 console.log('Connected to Ably!');
