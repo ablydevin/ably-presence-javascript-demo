@@ -33,13 +33,6 @@ button:active {
     transform: translateY(0);
 }
 
-aside#memberList {
-    text-align: center; 
-    margin-bottom: 20px; 
-    width: 100px;
-    height: 100px;
-}
-
 h2 {
     font-size: 20px;
     color: #FFFFFF; 
@@ -57,4 +50,39 @@ h2 {
     color: #FFFFFF;
     cursor: pointer;
     transition: transform 0.2s;
+}
+
+aside {
+    background: linear-gradient(28deg, #E40000 25%, #FF5416 75%); /* Active Orange gradient */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    width: 300px;
+    margin: 20px;
+}
+
+aside h2 {
+    color: #FFFFFF; /* White */
+    font-size: 24px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #FFFFFF; /* White for contrast */
+    padding-bottom: 10px;
+}
+
+aside ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+aside li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #292831; /* Charcoal grey */
+    color: #FFFFFF; /* White */
+    transition: background-color 0.3s ease;
+}
+
+aside li:hover {
+    background-color: #4AF7FF; /* Electric cyan */
 }
