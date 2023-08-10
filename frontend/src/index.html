@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
     <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
     <script>
@@ -57,11 +58,11 @@
   </head>
   <body class="fireworks">
     <aside>
-      <p>Who is here?</p>
+      <h2>Who is here?</h2>
       <ul id="memberList"></ul>
     </aside>
     <div>
-      <div>
+      <div class="button-container">
         <button type="button" onclick="channel?.presence.update('available')">
           Available
         </button>
@@ -79,7 +80,9 @@
         </button>
       </div>
       <div>
-        <button type="button" onclick="channel?.presence.leave()">Leave</button>
+        <button type="button" class="leaveButton" onclick="channel?.presence.leave()">
+          Leave
+        </button>
       </div>
     </div>
   </body>
