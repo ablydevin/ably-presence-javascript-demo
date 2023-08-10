@@ -29,11 +29,12 @@
 
                 //An already present member has updated their member data
                 channel.presence.subscribe("update", (member) => {
+                    console.log(member)
                     let memberItemElement = memberListElement.querySelector(`[data-clientId="${member.clientId}"]`)
                     memberItemElement.innerHTML = `${member.clientId} (${member.data})`;
-                    //play a sound
-                    //let beat = new Audio('beat.mp3');
-                    //beat.play();
+                    
+                    let beat = new Audio(`${member.data}.mp3`);
+                    beat.play();
                 });
 
                 channel.presence.subscribe("present", (member) => {
