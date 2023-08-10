@@ -1,14 +1,16 @@
 <html>
     <head>
         <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+        <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
         <script>   
 
-                
             const ably = new Ably.Realtime.Promise({
                     authUrl: '/auth',
             });
 
             const initializeClient = async () => {
+
+                const fireworks = new Fireworks.default(container)
 
                 await ably.connection.once('connected');
               
@@ -32,8 +34,10 @@
                     console.log(member)
                     let memberItemElement = memberListElement.querySelector(`[data-clientId="${member.clientId}"]`)
                     memberItemElement.innerHTML = `${member.clientId} (${member.data})`;
-                    
-                    let beat = new Audio(`sounds/${member.data}.mp3`);
+
+                    fireworks.launch(10)
+
+                    let beat = new Audio(`${member.data}.mp3`);
                     beat.play();
                 });
 
@@ -47,7 +51,7 @@
             }
         </script>
     </head>
-    <body>
+    <body class="fireworks">
             <aside>
                 <p>Who is here?</p>
                 <ul id="memberList"></ul>
@@ -67,6 +71,8 @@
     </body>
     <script>
         const memberListElement = document.querySelector('#memberList');
+        const container = document.querySelector('.fireworks')
+
         initializeClient();
     </script>
 </html>
