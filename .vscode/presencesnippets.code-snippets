@@ -22,6 +22,24 @@
 		"body" : [
 			"memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;"
 		],
-		"description": "print enter memeber info"
+		"description": "print enter member info"
+	},
+	"updateMember": {
+		"scope": "javascript",
+		"prefix": "ably",
+		"body" : [
+			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
+			"memberElement.innerHTML = `${member.clientId} (${member.data})`;"
+		],
+		"description": "print update member info"
+	},
+	"leaveMember": {
+		"scope": "javascript",
+		"prefix": "ably",
+		"body" : [
+			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
+			"memberElement?.remove();"
+		],
+		"description": "print leave member info"
 	}
 }
