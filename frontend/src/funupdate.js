@@ -1,9 +1,14 @@
+let container = null;
+let fireworks = null;
+
 function funUpdate(state) {
-    const container = document.querySelector(".fireworks");
-    const fireworks = new Fireworks.default(container);
-console.log(container)
-console.log(fireworks)
-    fireworks.launch(10);
+
+    if (container==null) { container = document.querySelector(".fireworks"); }
+    console.log(container)
+    if (fireworks==null) { fireworks = new Fireworks.default(container); }
+    console.log(fireworks)
+
+    fireworks?.launch(10);
 
     let beat = new Audio(`sounds/${state}.mp3`);
     beat.play();

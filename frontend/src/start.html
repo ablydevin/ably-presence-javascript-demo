@@ -5,6 +5,9 @@
     <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
     <script src="funupdate.js"></script>
     <script>
+      //const container = document.querySelector(".fireworks");
+      //const fireworks = new Fireworks.default(container);
+
       const ably = new Ably.Realtime.Promise({
         authUrl: "/auth",
       });
@@ -72,7 +75,7 @@
     </div>
   </body>
   <script>
-    const fireworks = new Fireworks.default(document.querySelector(".fireworks"));
+    //const fireworks = new Fireworks.default(document.querySelector(".fireworks"));
 
     const memberListElement = document.querySelector("#memberList")
 
