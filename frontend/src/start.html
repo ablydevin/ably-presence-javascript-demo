@@ -5,9 +5,6 @@
     <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
     <script src="funupdate.js"></script>
     <script>
-      //const container = document.querySelector(".fireworks");
-      //const fireworks = new Fireworks.default(container);
-
       const ably = new Ably.Realtime.Promise({
         authUrl: "/auth",
       });
@@ -19,34 +16,6 @@
         channel = ably.channels.get("cat-jam");
 
         document.querySelector("#clientId").innerHTML = ably.auth.clientId
-
-        channel.presence.subscribe("enter", (member) => {
-          memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;
-        });
-
-        channel.presence.subscribe('present', (member) => {
-          memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`
-        })
-
-        channel.presence.subscribe("leave", (member) => {
-          memberListElement
-            .querySelector(`[data-clientId="${member.clientId}"]`)
-            ?.remove();
-
-            funUpdate(`leave`)
-        });
-
-        channel.presence.subscribe("update", (member) => {
-          let memberItemElement = memberListElement.querySelector(
-            `[data-clientId="${member.clientId}"]`
-          );
-          memberItemElement.innerHTML = `${member.clientId} (${member.data})`;
-
-          funUpdate(member.data)
-        });
-
-
-        channel.presence.enter("available")
       };
     </script>
   </head>
@@ -54,31 +23,12 @@
     <div class="row">
       <div class="column left">
         <h2>Who is here?</h2>
-        <ul id="memberList"></ul>
       </div>
       <div class="column right">
         <h1>Welcome <span id="clientId"></span></h1>
-        <h3>Tell everyone your current status:</h3>
-        <div class="button-container">
-          <button type="button" onclick="channel?.presence.update('available')">Available</button>
-          <button type="button" onclick="channel?.presence.update('away')">Away</button>
-          <button type="button" onclick="channel?.presence.update('holiday')">Holiday</button>
-          <button type="button" onclick="channel?.presence.update('napping')">Napping</button>
-          <button type="button" onclick="channel?.presence.update('cats')">Cats</button>
-        </div>
-        <div>
-          <button type="button" class="leaveButton" onclick="channel?.presence.leave()">
-            Leave
-          </button>
-        </div>
-      </div>
     </div>
   </body>
   <script>
-    //const fireworks = new Fireworks.default(document.querySelector(".fireworks"));
-
-    const memberListElement = document.querySelector("#memberList")
-
     initializeClient();
   </script>
 </html>
