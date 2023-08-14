@@ -8,6 +8,14 @@
         authUrl: "/auth",
       });
 
+      let isMuted = false;
+      function toggleMute() {
+        isMuted = !isMuted;
+        document.querySelector(".muteButton").textContent = isMuted
+          ? "Unmute"
+          : "Mute";
+      }
+
       const initializeClient = async () => {
         const fireworks = new Fireworks.default(container);
 
@@ -16,7 +24,7 @@
 
         channel = ably.channels.get("cat-jam");
 
-        document.querySelector("#clientId").innerHTML = ably.auth.clientId
+        document.querySelector("#clientId").innerHTML = ably.auth.clientId;
 
         channel.presence.subscribe("enter", (member) => {
           memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;
@@ -30,6 +38,7 @@
             ?.remove();
           //play a sound
           let beat = new Audio(`sounds/leave.mp3`);
+          beat.muted = isMuted;
           beat.play();
         });
 
@@ -44,6 +53,7 @@
           fireworks.launch(10);
 
           let beat = new Audio(`sounds/${member.data}.mp3`);
+          beat.muted = isMuted;
           beat.play();
         });
 
@@ -58,35 +68,35 @@
       * {
         box-sizing: border-box;
       }
-      
+
       /* Create two unequal columns that floats next to each other */
       .column {
         float: left;
         padding: 10px;
         height: 300px; /* Should be removed. Only for demonstration */
       }
-      
+
       .left {
         width: 25%;
       }
-      
+
       .right {
         width: 75%;
       }
-      
+
       /* Clear floats after the columns */
       .row:after {
         content: "";
         display: table;
         clear: both;
       }
-      </style>
+    </style>
   </head>
   <body class="fireworks">
     <div class="row">
       <div class="column left">
         <h2>Who is here?</h2>
-        <ul id="memberList"></ul>  
+        <ul id="memberList"></ul>
       </div>
       <div class="column right">
         <h1>Welcome <span id="clientId"></span></h1>
@@ -108,7 +118,16 @@
           </button>
         </div>
         <div>
-          <button type="button" class="leaveButton" onclick="channel?.presence.leave()">
+          <button type="button" class="muteButton" onclick="toggleMute()">
+            Mute
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="leaveButton"
+            onclick="channel?.presence.leave()"
+          >
             Leave
           </button>
         </div>
@@ -120,6 +139,5 @@
     const container = document.querySelector(".fireworks");
 
     initializeClient();
-    
   </script>
 </html>
