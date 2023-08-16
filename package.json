@@ -6,7 +6,9 @@
   "scripts": {
     "start:backend": "node ./backend/server.js",
     "start:frontend": "open http://localhost:3001/index.html",
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+    "start:frontend:dev": "open http://localhost:3001/start.html",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend:dev\""
   },
   "keywords": [],
   "author": "",
