@@ -17,7 +17,7 @@
 	// }
 
 	"enterMember": {
-		"scope": "javascript",
+		"scope": "javascript,typescript,html",
 		"prefix": "ably",
 		"body" : [
 			"memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;"
@@ -25,7 +25,7 @@
 		"description": "print enter member info"
 	},
 	"updateMember": {
-		"scope": "javascript",
+		"scope": "javascript,typescript,html",
 		"prefix": "ably",
 		"body" : [
 			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
@@ -34,7 +34,7 @@
 		"description": "print update member info"
 	},
 	"leaveMember": {
-		"scope": "javascript",
+		"scope": "javascript,typescript,html",
 		"prefix": "ably",
 		"body" : [
 			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",

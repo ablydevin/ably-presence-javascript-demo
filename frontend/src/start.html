@@ -1,35 +1,52 @@
 <html>
-  <head>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
-    <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
-    <script src="funupdate.js"></script>
-    <script>
-      const ably = new Ably.Realtime.Promise({
-        authUrl: "/auth",
-      });
 
-      const initializeClient = async () => {
-        await ably.connection.once("connected");
-        console.log("Connected to Ably!");
-
-        channel = ably.channels.get("cat-jam");
-
-        document.querySelector("#clientId").innerHTML = ably.auth.clientId
-        
-      };
-    </script>
-  </head>
-  <body class="fireworks">
-    <div class="row">
-      <div class="column left">
-        <h2>Who is here?</h2>
-      </div>
-      <div class="column right">
-        <h1>Welcome <span id="clientId"></span></h1>
-    </div>
-  </body>
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+  <script src="https://unpkg.com/fireworks-js@2.x/dist/index.umd.js"></script>
+  <script src="funupdate.js"></script>
   <script>
-    initializeClient();
+    const ably = new Ably.Realtime.Promise({
+      authUrl: "/auth",
+    });
+
+    let isMuted = false;
+
+    function toggleMute(isMuted) {
+      isMuted = !isMuted;
+      document.querySelector(".muteButton").textContent = isMuted
+        ? "Unmute"
+        : "Mute";
+    }
+
+    const initializeClient = async () => {
+      await ably.connection.once("connected");
+      console.log("Connected to Ably!");
+
+      channel = ably.channels.get("cat-jam");
+
+      document.querySelector("#clientId").innerHTML = ably.auth.clientId
+
+    }; 
   </script>
+</head>
+
+<body class="fireworks">
+  <div class="row">
+    <div class="column left">
+      <h2>Who is here?</h2>
+    </div>
+    <div class="column right">
+      <h1>Welcome <span id="clientId"></span></h1>
+    </div>
+    <div>
+      <button type="button" class="muteButton" onclick="toggleMute()">
+        Mute
+      </button>
+    </div>
+</body>
+<script>
+  initializeClient();
+</script>
+
 </html>
