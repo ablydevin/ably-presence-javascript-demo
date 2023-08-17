@@ -69,6 +69,6 @@
     "body": [
       "memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data.status})</li>`;"
 	    ],
-    "description": "member status update button"
+    "description": "print present members info"
   }
 }
