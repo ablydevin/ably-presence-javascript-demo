@@ -10,15 +10,6 @@
       authUrl: "/auth",
     });
 
-    let isMuted = false;
-
-    function toggleMute(isMuted) {
-      isMuted = !isMuted;
-      document.querySelector(".muteButton").textContent = isMuted
-        ? "Unmute"
-        : "Mute";
-    }
-
     const initializeClient = async () => {
       await ably.connection.once("connected");
       console.log("Connected to Ably!");
@@ -32,17 +23,26 @@
 </head>
 
 <body class="fireworks">
+  <div class="row container">
+    <h2>Status-o-matic 5000</h2>
+    <div>Tell us your status.  Browse to https://DevEdge.ngrok.io.</div>
+    <hr>
+  </div>
   <div class="row">
     <div class="column left">
       <h2>Who is here?</h2>
     </div>
     <div class="column right">
-      <h1>Welcome <span id="clientId"></span></h1>
-    </div>
-    <div>
-      <button type="button" class="muteButton" onclick="toggleMute()">
-        Mute
-      </button>
+      <h2>Welcome <span id="clientId"></span></h2>
+      <div>
+        <!-- Status Controls -->
+      </div>
+      <div>
+        <div class=“buttoncontainer”>
+          <!-- Join/Leave/Mute Controls -->
+          <button type="button" class="muteButton" onclick="toggleMute()">Mute</button>
+        </div>
+      </div>
     </div>
 </body>
 <script>

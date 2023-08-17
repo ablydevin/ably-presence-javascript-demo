@@ -1,5 +1,6 @@
 let container = null;
 let fireworks = null;
+let isMuted = false;
 
 function funUpdate(state) {
 
@@ -14,3 +15,11 @@ function funUpdate(state) {
     beat.play();
 
 }
+
+function toggleMute() {
+  isMuted = (isMuted) ? false : true;
+  document.querySelector(".muteButton").textContent = isMuted
+    ? "Unmute"
+    : "Mute";
+}
+

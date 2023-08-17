@@ -16,14 +16,24 @@
 	// 	"description": "Log output to console"
 	// }
 
+	"memberList": {
+		"scope": "javascript,typescript,html",
+		"prefix": "ably",
+		"body" : [
+			"const memberListElement = document.querySelector('#memberList')"
+		],
+		"description": "get memberList element"
+	},
+
 	"enterMember": {
 		"scope": "javascript,typescript,html",
 		"prefix": "ably",
 		"body" : [
-			"memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;"
+			"memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data.status})</li>`;"
 		],
 		"description": "print enter member info"
 	},
+
 	"updateMember": {
 		"scope": "javascript,typescript,html",
 		"prefix": "ably",
@@ -33,6 +43,7 @@
 		],
 		"description": "print update member info"
 	},
+
 	"leaveMember": {
 		"scope": "javascript,typescript,html",
 		"prefix": "ably",
@@ -41,5 +52,17 @@
 			"memberElement?.remove();"
 		],
 		"description": "print leave member info"
-	}
+	},
+
+	"statusButton": {
+		"scope": "javascript,typescript,html",
+		"prefix": "ably",
+		"body" : [
+			"<h3>Tell everyone your current status:</h3>",
+			"<div class=“button-container”>",
+			"    <button type=\"button\">Available</button>",
+			"</div>"
+		],
+		"description": "member status update button"
+	}	
 }
