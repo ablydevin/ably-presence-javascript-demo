@@ -1,68 +1,74 @@
 {
-	// Place your presenceVanillaJsDemo workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
-	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
-	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
-	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
-	// Placeholders with the same ids are connected.
-	// Example:
-	// "Print to console": {
-	// 	"scope": "javascript,typescript",
-	// 	"prefix": "log",
-	// 	"body": [
-	// 		"console.log('$1');",
-	// 		"$2"
-	// 	],
-	// 	"description": "Log output to console"
-	// }
+  // Place your presenceVanillaJsDemo workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
 
-	"memberList": {
-		"scope": "javascript,typescript,html",
-		"prefix": "ably",
-		"body" : [
-			"const memberListElement = document.querySelector('#memberList')"
-		],
-		"description": "get memberList element"
-	},
+  "memberList": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": ["const memberListElement = document.querySelector('#memberList')"],
+    "description": "get memberList element"
+  },
 
-	"enterMember": {
-		"scope": "javascript,typescript,html",
-		"prefix": "ably",
-		"body" : [
-			"memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data.status})</li>`;"
-		],
-		"description": "print enter member info"
-	},
+  "enterMember": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": [
+      "memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data.status})</li>`;"
+    ],
+    "description": "print enter member info"
+  },
 
-	"updateMember": {
-		"scope": "javascript,typescript,html",
-		"prefix": "ably",
-		"body" : [
-			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
-			"memberElement.innerHTML = `${member.clientId} (${member.data})`;"
-		],
-		"description": "print update member info"
-	},
+  "updateMember": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": [
+      "const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
+      "memberElement.innerHTML = `${member.clientId} (${member.data.status})`;"
+    ],
+    "description": "print update member info"
+  },
 
-	"leaveMember": {
-		"scope": "javascript,typescript,html",
-		"prefix": "ably",
-		"body" : [
-			"const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
-			"memberElement?.remove();"
-		],
-		"description": "print leave member info"
-	},
+  "leaveMember": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": [
+      "const memberElement = memberListElement.querySelector(`[data-clientId='${member.clientId}']`);",
+      "memberElement?.remove();"
+    ],
+    "description": "print leave member info"
+  },
 
-	"statusButton": {
-		"scope": "javascript,typescript,html",
-		"prefix": "ably",
-		"body" : [
-			"<h3>Tell everyone your current status:</h3>",
-			"<div class=“button-container”>",
-			"    <button type=\"button\">Available</button>",
-			"</div>"
-		],
-		"description": "member status update button"
-	}	
+  "statusButton": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": [
+      "<h3>Tell everyone your current status:</h3>",
+      "<div class=“button-container”>",
+      "    <button type=\"button\">Available</button>",
+      "</div>"
+    ],
+    "description": "member status update button"
+  },
+  "presentMembers": {
+    "scope": "javascript,typescript,html",
+    "prefix": "ably",
+    "body": [
+      "memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data.status})</li>`;"
+	    ],
+    "description": "member status update button"
+  }
 }
