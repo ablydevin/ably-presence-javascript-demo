@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+
+    <script>
+      const ably = new Ably.Realtime.Promise({
+        authUrl: "/auth",
+      });
+
+      let isMuted = false;
+      function toggleMute() {
+        isMuted = !isMuted;
+        document.querySelector(".muteButton").textContent = isMuted
+          ? "Unmute"
+          : "Mute";
+      }
+
+      const initializeClient = async () => {
+        const fireworks = new Fireworks.default(container);
+
+        await ably.connection.once("connected");
+        console.log("Connected to Ably!");
+
+        channel = ably.channels.get("cat-jam");
+
+        document.querySelector("#clientId").innerHTML = ably.auth.clientId;
+
+        channel.presence.subscribe("enter", (member) => {
+          memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;
+          //play a sound
+        });
+
+        //A member who was present has left the channel
+        channel.presence.subscribe("leave", (member) => {
+          memberListElement
+            .querySelector(`[data-clientId="${member.clientId}"]`)
+            ?.remove();
+          //play a sound
+          let beat = new Audio(`sounds/leave.mp3`);
+          beat.muted = isMuted;
+          beat.play();
+        });
+
+        //An already present member has updated their member data
+        channel.presence.subscribe("update", (member) => {
+          console.log(member);
+          let memberItemElement = memberListElement.querySelector(
+            `[data-clientId="${member.clientId}"]`
+          );
+          memberItemElement.innerHTML = `${member.clientId} (${member.data})`;
+
+          fireworks.launch(10);
+
+          let beat = new Audio(`sounds/${member.data}.mp3`);
+          beat.muted = isMuted;
+          beat.play();
+        });
+
+        channel.presence.subscribe("present", (member) => {
+          memberListElement.innerHTML += `<li data-clientId='${member.clientId}'>${member.clientId} (${member.data})</li>`;
+        });
+
+        channel.presence.enter("available");
+      };
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Create two unequal columns that floats next to each other */
+      .column {
+        float: left;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+      }
+
+      .left {
+        width: 25%;
+      }
+
+      .right {
+        width: 75%;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+  <body class="fireworks">
+    <div class="row">
+      <div class="column left">
+        <h2>Who is here?</h2>
+        <ul id="memberList"></ul>
+      </div>
+      <div class="column right">
+        <h1>Welcome <span id="clientId"></span></h1>
+        <div class="button-container">
+          <button type="button" onclick="channel?.presence.update('available')">
+            Available
+          </button>
+          <button type="button" onclick="channel?.presence.update('away')">
+            Away
+          </button>
+          <button type="button" onclick="channel?.presence.update('holiday')">
+            Holiday
+          </button>
+          <button type="button" onclick="channel?.presence.update('napping')">
+            Napping
+          </button>
+          <button type="button" onclick="channel?.presence.update('cats')">
+            Cats
+          </button>
+        </div>
+        <div>
+          <button type="button" class="muteButton" onclick="toggleMute()">
+            Mute
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="leaveButton"
+            onclick="channel?.presence.leave()"
+          >
+            Leave
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const memberListElement = document.querySelector("#memberList");
+    const container = document.querySelector(".fireworks");
+
+    initializeClient();
+  </script>
+</html>
